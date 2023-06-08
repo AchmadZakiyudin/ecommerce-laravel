@@ -72,7 +72,9 @@ class SliderController extends Controller
      */
     public function show(Slider $Slider)
     {
-        //
+        return response()->json([
+            'data' => $Slider
+        ]);
     }
 
     /**

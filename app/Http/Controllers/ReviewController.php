@@ -66,7 +66,9 @@ class ReviewController extends Controller
      */
     public function show(Review $Review)
     {
-        //
+        return response()->json([
+            'data' => $Review
+        ]);
     }
 
     /**

@@ -72,7 +72,9 @@ class testimoniController extends Controller
      */
     public function show(testimoni $testimoni)
     {
-        //
+        return response()->json([
+            'data' => $testimoni
+        ]);
     }
 
     /**
