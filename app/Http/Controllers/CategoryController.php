@@ -10,12 +10,15 @@ use Illuminate\Support\Facades\Validator;
 class CategoryController extends Controller
 {
     public function __construct()
-    {
-        $this->middleware('auth:api')->except(['index']);
+    {     
     }
-    /**
-     * Display a listing of the resource.
-     */
+    
+    function list()
+    {
+        $this->middleware('auth');
+        return view('kategori.index');    
+    }
+
     public function index()
     {
         $categories = Category::all();
@@ -128,6 +131,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        $this->middleware('auth:api');
+        
         file::delete('uploads/' . $category->gambar);
         $category->delete();
 
