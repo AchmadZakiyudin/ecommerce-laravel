@@ -27,12 +27,16 @@ class AuthController extends Controller
 
         if (auth()->attempt($credentials)) {
             $token = Auth::guard('api')->attempt($credentials);
-            cookie()->queue(cookie('token', $token, 60));
-            return redirect('/dashboard');
+            return response()->json([
+                'success' => true,
+                'message' => 'Login Berhasil',
+                'token' => $token
+            ]);
         }
-        
-        return back()->withErrors([
-            'error' => 'email atau password salah'
+
+        return response()->json([
+            'success' => false,
+            'message' => 'email atau password salah'
         ]);
 
     }
