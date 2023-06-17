@@ -10,12 +10,13 @@ use Illuminate\Support\Facades\Validator;
 class CategoryController extends Controller
 {
     public function __construct()
-    {     
+    {   
+        $this->middleware('auth')->only(['list']);
+        $this->middleware('auth:api')->only(['store', 'update', 'delete']);
     }
     
     function list()
     {
-        $this->middleware('auth');
         return view('kategori.index');    
     }
 
@@ -66,6 +67,7 @@ class CategoryController extends Controller
         $category = category::create($input);
 
         return response()->json([
+            'success' => true,
             'data' => $category
         ]);
     }
@@ -121,6 +123,7 @@ class CategoryController extends Controller
         $category->update($input);
 
         return response()->json([
+            'success' => true,
             'massage' => 'success',
             'data' => $category
         ]);
@@ -131,12 +134,12 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $this->middleware('auth:api');
         
         file::delete('uploads/' . $category->gambar);
         $category->delete();
 
         return response()->json([
+            'success' => true,
             'massage' => 'success'
         ]);
     }
