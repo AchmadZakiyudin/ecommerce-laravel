@@ -58,7 +58,7 @@
                 </form>
                     <div class="form-group">
                         <label>Gambar</label>
-                        <input type="file" class="form-control" name="gambar" required>
+                        <input type="file" class="form-control" name="gambar">
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block">Submit</button>
                 </div>
@@ -91,7 +91,7 @@
                             <td>${val.deskripsi}</td>
                             <td><img src="/uploads/${val.gambar}" width="150"></td>
                             <td>
-                                <a data toggle="modal" href="modal-form" data-id="${val.id}" class="btn btn-warning modal-ubah">Edit</a>
+                                <a data toggle="modal" href="#modal-form" data-id="${val.id}" class="btn btn-warning modal-ubah">Edit</a>
                                 <a href="#" data-id="${val.id}" class="btn btn-danger btn-hapus">Hapus</a>
                             </td>
                         </tr>
@@ -128,6 +128,8 @@
 
             $('.modal-tambah').click(function(){
                 $('#modal-form').modal('show')
+                $('input[name="nama_kategori"]').val('');
+                $('textarea[name="deskripsi"]').val('');
 
                 $('.form-kategori').submit(function(e){
                     e.preventDefault()
@@ -143,10 +145,10 @@
                         contentType: false,
                         processData: false,
                         headers : {
-                            "Authorization" : "Bearer" + token
+                            "Authorization" : 'Bearer'+ token
                         },
                         success : function(data){
-                            if (data.success);
+                            if (data.success)
                         {
                             alert('Data berhasil ditambah');
                             location.reload();
@@ -156,9 +158,39 @@
             });
         });
 
-            $(document).on('click', '.modal-ubah', function () {
-                $('#modal-form').modal('show')
-            })
+        $(document).on('click', '.modal-ubah', function() {
+            $('#modal-form').modal('show')
+            const id = $(this).data('id');
+            $.get('/api/categories/' + id, function({
+                data
+            }) {
+                $('input[name="nama_kategori"]').val(data.nama_kategori);
+                $('textarea[name="deskripsi"]').val(data.deskripsi);
+            });
+            $('.form-kategori').submit(function(e) {
+                e.preventDefault()
+                const token = localStorage.getItem('token')
+                const frmdata = new FormData(this);
+                $.ajax({
+                    url: `api/categories/${id}?_method=PUT`,
+                    type: 'POST',
+                    data: frmdata,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    headers: {
+                        "Authorization": 'Bearer' + token
+                    },
+                    success: function(data) {
+                        if (data.success) {
+                            alert('Data berhasil diubah')
+                            location.reload();
+                        }
+                    }
+                })
+            });
+
+            });
 
         });
     </script>
