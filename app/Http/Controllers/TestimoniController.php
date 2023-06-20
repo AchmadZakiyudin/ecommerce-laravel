@@ -10,8 +10,14 @@ use Illuminate\Support\Facades\Validator;
 class testimoniController extends Controller
 {
     public function __construct()
+    {   
+        $this->middleware('auth')->only(['list']);
+        $this->middleware('auth:api')->only(['store', 'update', 'destroy']);
+    }
+
+    function list()
     {
-        $this->middleware('auth:api')->except(['index']);
+        return view('testimoni.index');    
     }
     /**
      * Display a listing of the resource.
@@ -21,6 +27,7 @@ class testimoniController extends Controller
         $testimonis = testimoni::all();
 
         return response()->json([
+            'success' => true,
             'data' => $testimonis
         ]);
     }
@@ -63,6 +70,7 @@ class testimoniController extends Controller
         $testimoni = testimoni::create($input);
 
         return response()->json([
+            'success' => true,
             'data' => $testimoni
         ]);
     }
@@ -73,6 +81,7 @@ class testimoniController extends Controller
     public function show(testimoni $testimoni)
     {
         return response()->json([
+            'success' => true,
             'data' => $testimoni
         ]);
     }
@@ -118,6 +127,7 @@ class testimoniController extends Controller
         $testimoni->update($input);
 
         return response()->json([
+            'success' => true,
             'massage' => 'success',
             'data' => $testimoni
         ]);
@@ -132,6 +142,7 @@ class testimoniController extends Controller
         $testimoni->delete();
 
         return response()->json([
+            'success' => true,
             'massage' => 'success'
         ]);
     }

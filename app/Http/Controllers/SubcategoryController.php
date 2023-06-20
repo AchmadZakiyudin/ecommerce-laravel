@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -10,19 +11,27 @@ use Illuminate\Support\Facades\Validator;
 class SubcategoryController extends Controller
 {
     public function __construct()
-    {
-        $this->middleware('auth:api')->except(['index']);
+    {   
+        $this->middleware('auth')->only(['list']);
+        $this->middleware('auth:api')->only(['store', 'update', 'destroy']);
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $subcategories = Subcategory::all();
+        $subcategories = Subcategory::with('category')->get();
 
         return response()->json([
             'data' => $subcategories
         ]);
+    }
+
+    public function list()
+    {
+        $categories = Category::all();
+
+        return view('subkategori.index', compact('categories'));
     }
 
     /**
@@ -64,6 +73,7 @@ class SubcategoryController extends Controller
         $Subcategory = Subcategory::create($input);
 
         return response()->json([
+            'success' => true,
             'data' => $Subcategory
         ]);
     }
@@ -120,6 +130,7 @@ class SubcategoryController extends Controller
         $Subcategory->update($input);
 
         return response()->json([
+            'success' => true,
             'massage' => 'success',
             'data' => $Subcategory
         ]);
@@ -134,6 +145,7 @@ class SubcategoryController extends Controller
         $Subcategory->delete();
 
         return response()->json([
+            'success' => true,
             'massage' => 'success'
         ]);
     }
