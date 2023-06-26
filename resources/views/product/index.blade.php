@@ -139,8 +139,8 @@
                     row += `
                         <tr>
                             <td>${index+1}</td>
-                            <td>${val.category.nama_kategori}</td>
-                            <td>${val.subcategory.nama_subkategori}</td>
+                            <td>${val.category?.nama_kategori}</td>
+                            <td>${val.subcategory?.nama_subkategori}</td>
                             <td>${val.nama_barang}</td>
                             <td>${val.harga}</td>
                             <td>${val.diskon}</td>

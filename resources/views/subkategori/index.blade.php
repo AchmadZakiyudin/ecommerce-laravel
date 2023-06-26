@@ -97,7 +97,7 @@
                         <tr>
                             <td>${index+1}</td>
                             <td>${val.nama_subkategori}</td>
-                            <td>${val.category.nama_kategori}</td>
+                            <td>${val.category?.nama_kategori}</td>
                             <td>${val.deskripsi}</td>
                             <td><img src="/uploads/${val.gambar}" width="150"></td>
                             <td>
